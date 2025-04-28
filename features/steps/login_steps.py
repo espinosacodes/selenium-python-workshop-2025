@@ -1,14 +1,39 @@
 from behave import given, when, then
 from selenium import webdriver
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from selenium.webdriver.common.by import By
+import os
 
 @given('the user is on the login page')
 def step_given_user_on_login_page(context):
-    context.driver = webdriver.Chrome()  # o webdriver.Firefox()
-    context.driver.get("https://www.saucedemo.com/v1/index.html")
+    # Limpiar cualquier configuración previa
+    os.environ.pop('BROWSER', None)
+    os.environ.pop('SELENIUM_BROWSER', None)
+    
+    # Configurar Firefox específicamente
+    firefox_options = Options()
+    firefox_options.binary_location = "/usr/bin/firefox-developer-edition"
+    
+    # Configurar preferencias específicas
+    firefox_options.set_preference("browser.startup.homepage", "about:blank")
+    firefox_options.set_preference("startup.homepage_welcome_url", "about:blank")
+    firefox_options.set_preference("startup.homepage_welcome_url.additional", "about:blank")
+    firefox_options.set_preference("browser.link.open_newwindow", 2)
+    firefox_options.set_preference("browser.link.open_newwindow.restriction", 0)
+    
+    # Forzar el uso de Firefox
+    service = Service(GeckoDriverManager().install())
+    context.driver = webdriver.Firefox(service=service, options=firefox_options)
+    
+    # Verificar que estamos usando Firefox
+    assert "firefox" in context.driver.capabilities['browserName'].lower(), "El navegador no es Firefox"
+    
     context.login_page = LoginPage(context.driver)
+    context.driver.get("https://www.saucedemo.com/v1/index.html")
 
 @when('the user logs in with valid credentials')
 def step_when_user_logs_in_valid(context):

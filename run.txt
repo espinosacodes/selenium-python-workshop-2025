@@ -1,0 +1,30 @@
+run it with :
+behave features/mercadolibre.feature
+behave features/wikipedia.feature
+
+
+[santiago@archlinuxalienware 2025-1-pruebas-automatizadas-espinosacodes]$ behave features/wikipedia.feature
+Feature: Verificar título de artículo en Wikipedia # features/wikipedia.feature:1
+
+  Scenario: Buscar y verificar título de artículo de Python  # features/wikipedia.feature:3
+    Given I am on the Wikipedia home page                    # features/steps/wikipedia_steps.py:9 4.985s
+    When I search for "Python (lenguaje de programación)"    # features/steps/wikipedia_steps.py:36 0.664s
+    Then I should see the article title "Python"             # features/steps/wikipedia_steps.py:40 0.797s
+
+1 feature passed, 0 failed, 0 skipped
+1 scenario passed, 0 failed, 0 skipped
+3 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m6.446s
+[santiago@archlinuxalienware 2025-1-pruebas-automatizadas-espinosacodes]$ behave features/mercadolibre.feature
+Feature: Verificar búsqueda de productos en MercadoLibre # features/mercadolibre.feature:1
+
+  Scenario: Buscar iPhone 13 y verificar resultados                   # features/mercadolibre.feature:3
+    Given I am on the MercadoLibre home page                          # features/steps/mercadolibre_steps.py:9 5.328s
+    When I search for product "iPhone 13" in MercadoLibre             # features/steps/mercadolibre_steps.py:36 13.733s
+    Then I should see MercadoLibre search results containing "iPhone" # features/steps/mercadolibre_steps.py:40 0.896s
+
+1 feature passed, 0 failed, 0 skipped
+1 scenario passed, 0 failed, 0 skipped
+3 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m19.957s
+[santiago@archlinuxalienware 2025-1-pruebas-automatizadas-espinosacodes]$ 
